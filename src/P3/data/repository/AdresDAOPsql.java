@@ -2,6 +2,7 @@ package P3.data.repository;
 
 import P3.data.PostgresBaseDao;
 import P3.data.entity.Adres;
+import P3.data.entity.Reiziger;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -109,12 +110,12 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
     }
 
     @Override
-    public Adres findByReiziger(int reizigerId) {
+    public Adres findByReiziger(Reiziger reiziger) {
         String query = "select * from adres where reiziger_id = ?";
         Adres a = new Adres();
         try (Connection conn = super.getConnection()) {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, reizigerId);
+            preparedStatement.setInt(1, reiziger.getId());
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 a.setId(rs.getInt("adres_id"));
@@ -122,11 +123,13 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
                 a.setHuisnummer(rs.getString("huisnummer"));
                 a.setStraat(rs.getString("straat"));
                 a.setWoonplaats(rs.getString("woonplaats"));
-                a.setReizigerId(rs.getInt("reiziger_id"));
+                a.setReizigerId(reiziger.getId());
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return a;
     }
+
+
 }

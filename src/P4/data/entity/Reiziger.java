@@ -1,6 +1,7 @@
 package P4.data.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Reiziger {
     private int id;
@@ -9,6 +10,7 @@ public class Reiziger {
     private String achternaam;
     private LocalDate geboortedatum;
     private Adres adres;
+    private List<OVChipkaart> ovChipkaarts;
 
     public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, LocalDate geboortedatum) {
         this.id = id;
@@ -69,6 +71,14 @@ public class Reiziger {
         this.adres = adres;
     }
 
+    public List<OVChipkaart> getOvChipkaarts() {
+        return ovChipkaarts;
+    }
+
+    public void setOvChipkaarts(List<OVChipkaart> ovChipkaarts) {
+        this.ovChipkaarts = ovChipkaarts;
+    }
+
     @Override
     public String toString() {
         if (tussenvoegsel == null) {
@@ -78,6 +88,7 @@ public class Reiziger {
                     " " + achternaam +
                     ", geb. " + geboortedatum +
                     ", " + adres +
+                    ", " + ovChipkaarts +
                     '}';
         }
         return "Reiziger {" +
@@ -87,6 +98,7 @@ public class Reiziger {
                 " " + achternaam +
                 ", geb. " + geboortedatum +
                 ", " + adres +
+                ", " + ovChipkaarts +
                 '}';
     }
 }

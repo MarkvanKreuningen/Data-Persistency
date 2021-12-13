@@ -2,6 +2,7 @@ package P4.data.repository;
 
 import P4.data.PostgresBaseDao;
 import P4.data.entity.Adres;
+import P4.data.entity.Reiziger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -111,12 +112,12 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
     }
 
     @Override
-    public Adres findByReiziger(int reizigerId) {
+    public Adres findByReiziger(Reiziger reiziger) {
         String query = "select * from adres where reiziger_id = ?";
         Adres a = new Adres();
         try (Connection conn = super.getConnection()) {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, reizigerId);
+            preparedStatement.setInt(1, reiziger.getId());
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 a.setId(rs.getInt("adres_id"));

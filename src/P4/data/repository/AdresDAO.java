@@ -1,6 +1,7 @@
 package P4.data.repository;
 
 import P4.data.entity.Adres;
+import P4.data.entity.Reiziger;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ public interface AdresDAO {
     Adres update(Adres adres);
     boolean delete(int id);
     Adres findById(int id);
-    Adres findByReiziger(int reizigerId);
+    Adres findByReiziger(Reiziger reiziger);
 }

@@ -1,8 +1,8 @@
 package P3.data.repository;
 
 import P3.data.entity.Adres;
+import P3.data.entity.Reiziger;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface AdresDAO {
@@ -11,5 +11,5 @@ public interface AdresDAO {
     Adres update(Adres adres);
     boolean delete(int id);
     Adres findById(int id);
-    Adres findByReiziger(int reizigerId);
+    Adres findByReiziger(Reiziger reiziger);
 }

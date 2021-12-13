@@ -10,5 +10,6 @@ public interface ReizigerDao {
     Reiziger findById(int id);
     Reiziger save(Reiziger reiziger);
     Reiziger update(Reiziger reiziger);
+    List<Reiziger> findByGbdatum(String datum);
     boolean delete(int id);
 }

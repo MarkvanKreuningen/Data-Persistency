@@ -9,6 +9,7 @@ public interface ReizigerDao {
     List<Reiziger> findAll();
     Reiziger findById(int id) throws SQLException;
     Reiziger save(Reiziger reiziger);
+    List<Reiziger> findByGbdatum(String datum);
     Reiziger update(Reiziger reiziger);
     boolean delete(int id);
 }

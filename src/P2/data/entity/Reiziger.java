@@ -3,14 +3,14 @@ package P2.data.entity;
 import java.time.LocalDate;
 
 public class Reiziger {
-    private int reiziger_id;
+    private int id;
     private String voorletters;
     private String tussenvoegsel;
     private String achternaam;
     private LocalDate geboortedatum;
 
-    public Reiziger(int reiziger_id, String voorletters, String tussenvoegsel, String achternaam, LocalDate geboortedatum) {
-        this.reiziger_id = reiziger_id;
+    public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, LocalDate geboortedatum) {
+        this.id = id;
         this.voorletters = voorletters;
         this.tussenvoegsel = tussenvoegsel;
         this.achternaam = achternaam;
@@ -20,12 +20,12 @@ public class Reiziger {
     public Reiziger() {
     }
 
-    public int getReiziger_id() {
-        return reiziger_id;
+    public int getId() {
+        return id;
     }
 
-    public void setReiziger_id(int reiziger_id) {
-        this.reiziger_id = reiziger_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getVoorletters() {
@@ -63,7 +63,7 @@ public class Reiziger {
     @Override
     public String toString() {
         return "Reiziger{" +
-                "reiziger_id=" + reiziger_id +
+                "reiziger_id=" + id +
                 ", voorletters='" + voorletters + '\'' +
                 ", tussenvoegsel='" + tussenvoegsel + '\'' +
                 ", achternaam='" + achternaam + '\'' +

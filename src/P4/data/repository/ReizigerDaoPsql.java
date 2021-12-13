@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
     private final AdresDAO adresDAO = new AdresDAOPsql();
+    private final OVChipkaartDAO ovChipkaartDAO = new OVChipkaartDAOPsql();
 
     @Override
     public List<Reiziger> findAll() {
@@ -25,7 +26,8 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
                 r.setTussenvoegsel(rs.getString("tussenvoegsel"));
                 r.setAchternaam(rs.getString("achternaam"));
                 r.setGeboortedatum(LocalDate.parse(rs.getString("geboortedatum")));
-                r.setAdres(adresDAO.findByReiziger(r.getId()));
+                r.setAdres(adresDAO.findByReiziger(r));
+                r.setOvChipkaarts(ovChipkaartDAO.findByReiziger(r));
                 allReizigers.add(r);
             }
             rs.close();
@@ -49,12 +51,39 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
                 r.setTussenvoegsel(rs.getString("tussenvoegsel"));
                 r.setAchternaam(rs.getString("achternaam"));
                 r.setGeboortedatum(LocalDate.parse(rs.getString("geboortedatum")));
-                r.setAdres(adresDAO.findByReiziger(id));
+                r.setAdres(adresDAO.findByReiziger(r));
+                r.setOvChipkaarts(ovChipkaartDAO.findByReiziger(r));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return r;
+    }
+
+    @Override
+    public List<Reiziger> findByGbdatum(String datum) {
+        List<Reiziger> allReizigers = new ArrayList<>();
+        try (Connection conn = super.getConnection()){
+            String query = "select * from reiziger where geboortedatum = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setDate(1, Date.valueOf(datum));
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Reiziger r = new Reiziger();
+                r.setId(rs.getInt("reiziger_id"));
+                r.setVoorletters(rs.getString("voorletters"));
+                r.setTussenvoegsel(rs.getString("tussenvoegsel"));
+                r.setAchternaam(rs.getString("achternaam"));
+                r.setGeboortedatum(LocalDate.parse(rs.getString("geboortedatum")));
+                r.setAdres(adresDAO.findByReiziger(r));
+                r.setOvChipkaarts(ovChipkaartDAO.findByReiziger(r));
+                allReizigers.add(r);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allReizigers;
     }
 
     @Override

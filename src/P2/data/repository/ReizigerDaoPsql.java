@@ -18,7 +18,7 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Reiziger r = new Reiziger();
-                r.setReiziger_id(rs.getInt("reiziger_id"));
+                r.setId(rs.getInt("reiziger_id"));
                 r.setVoorletters(rs.getString("voorletters"));
                 r.setTussenvoegsel(rs.getString("tussenvoegsel"));
                 r.setAchternaam(rs.getString("achternaam"));
@@ -41,7 +41,7 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                r.setReiziger_id(rs.getInt("reiziger_id"));
+                r.setId(rs.getInt("reiziger_id"));
                 r.setVoorletters(rs.getString("voorletters"));
                 r.setTussenvoegsel(rs.getString("tussenvoegsel"));
                 r.setAchternaam(rs.getString("achternaam"));
@@ -58,7 +58,7 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
         String query = "insert into reiziger values (?, ?, ?, ?, ?)";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, r.getReiziger_id());
+            pstmt.setInt(1, r.getId());
             pstmt.setString(2, r.getVoorletters());
             pstmt.setString(3, r.getTussenvoegsel());
             pstmt.setString(4, r.getAchternaam());
@@ -81,7 +81,7 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             pstmt.setString(2, r.getTussenvoegsel());
             pstmt.setString(3, r.getAchternaam());
             pstmt.setDate(4, Date.valueOf(r.getGeboortedatum()));
-            pstmt.setInt(5, r.getReiziger_id());
+            pstmt.setInt(5, r.getId());
             pstmt.executeUpdate();
             pstmt.close();
             return r;
@@ -89,6 +89,30 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Reiziger> findByGbdatum(String datum) {
+        List<Reiziger> allReizigers = new ArrayList<>();
+        try (Connection conn = super.getConnection()){
+            String query = "select * from reiziger where geboortedatum = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setDate(1, Date.valueOf(datum));
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Reiziger r = new Reiziger();
+                r.setId(rs.getInt("reiziger_id"));
+                r.setVoorletters(rs.getString("voorletters"));
+                r.setTussenvoegsel(rs.getString("tussenvoegsel"));
+                r.setAchternaam(rs.getString("achternaam"));
+                r.setGeboortedatum(LocalDate.parse(rs.getString("geboortedatum")));
+                allReizigers.add(r);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allReizigers;
     }
 
     @Override
