@@ -1,7 +1,9 @@
-package P4.data.repository;
+package repository;
 
-import P4.data.entity.Adres;
-import P4.data.entity.Reiziger;
+
+
+import entity.Adres;
+import entity.Reiziger;
 
 import java.util.List;
 

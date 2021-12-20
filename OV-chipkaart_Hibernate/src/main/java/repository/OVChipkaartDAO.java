@@ -1,7 +1,8 @@
-package P4.data.repository;
+package repository;
 
-import P4.data.entity.OVChipkaart;
-import P4.data.entity.Reiziger;
+
+import entity.OVChipkaart;
+import entity.Reiziger;
 
 import java.util.List;
 

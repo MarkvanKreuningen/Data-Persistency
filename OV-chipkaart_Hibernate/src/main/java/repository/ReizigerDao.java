@@ -1,6 +1,7 @@
-package P4.data.repository;
+package repository;
 
-import P4.data.entity.Reiziger;
+
+import entity.Reiziger;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DP_OV-Chipkaart.iml" filepath="$PROJECT_DIR$/DP_OV-Chipkaart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OV-chipkaart_Hibernate/OV-chipkaart_Hibernate.iml" filepath="$PROJECT_DIR$/OV-chipkaart_Hibernate/OV-chipkaart_Hibernate.iml" />
     </modules>
   </component>
 </project>

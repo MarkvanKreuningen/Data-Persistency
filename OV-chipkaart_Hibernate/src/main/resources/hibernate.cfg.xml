@@ -12,5 +12,7 @@
 	
 	<!-- List of XML mapping files -->
 	<mapping resource="Adres.hbm.xml"/>
+	<mapping resource="Product.hbm.xml"/>
+<!--	<mapping resource="Reiziger.hbm.xml"/>-->
 </session-factory> 
 </hibernate-configuration>

@@ -1,4 +1,4 @@
-package P5.data.entity;
+package entity;
 
 import java.time.LocalDate;
 import java.util.List;

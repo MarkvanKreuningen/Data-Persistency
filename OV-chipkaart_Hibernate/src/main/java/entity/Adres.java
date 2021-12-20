@@ -1,11 +1,21 @@
-package P5.data.entity;
+package entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "adres")
 public class Adres {
+    @Id
+    @Column(name = "adres_id")
     private int id;
     private String postcode;
     private String huisnummer;
     private String straat;
     private String woonplaats;
+    @Column(name = "reiziger_id")
     private int reizigerId;
 
     public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, int reizigerId) {

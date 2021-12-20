@@ -4,7 +4,7 @@
 
 <hibernate-mapping>
     <class name="entity.Adres" table="ADRES">
-        <id name="adres_id" type="int" access="field">
+        <id name="id" type="int" access="field">
             <column name="ADRES_ID" />
             <generator class="assigned" />
         </id>
@@ -21,11 +21,11 @@
             <column name="STRAAT" />
         </property>
 
-        <property name="woonplaats" type="java.util.Date" access="field">
+        <property name="woonplaats" type="java.lang.String" access="field">
             <column name="WOONPLAATS" />
         </property>
 
-        <property name="reiziger_id" type="java.util.Date" access="field">
+        <property name="reizigerId" type="int" access="field">
             <column name="REIZIGER_ID" />
         </property>
 

@@ -1,13 +1,26 @@
-package P5.data.entity;
+package entity;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+//@Entity
+//@Table(name = "product")
 public class Product {
+//    @Id
+//    @Column(name = "product_nummer")
     private int productNumber;
     private String naam;
     private String beschrijving;
     private double prijs;
+
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+//    @JoinTable(name = "ov_chipkaart_product",
+//        joinColumns = @JoinColumn(name = "product_nummer"),
+//        inverseJoinColumns = @JoinColumn(name = "kaart_nummer"))
     private List<OVChipkaart> ovChipkaarts;
+
     private List<Integer> kaartnummers;
 
     public Product(int productNumber, String naam, String beschrijving, double prijs, List<Integer> kaartnummers) {
