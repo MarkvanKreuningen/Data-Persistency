@@ -1,14 +1,12 @@
 package entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "adres")
 public class Adres {
     @Id
+    @GeneratedValue(generator="increment")
     @Column(name = "adres_id")
     private int id;
     private String postcode;
