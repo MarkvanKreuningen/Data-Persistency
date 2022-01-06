@@ -13,7 +13,8 @@
 		<!-- List of XML mapping files -->
 		<mapping class="entity.Adres"/>
 		<mapping class="entity.Product"/>
+		<mapping class="entity.OVChipkaart"/>
+		<mapping class="entity.Reiziger"/>
 
-		<!--	<mapping resource="Reiziger.hbm.xml"/>-->
 	</session-factory>
 </hibernate-configuration>

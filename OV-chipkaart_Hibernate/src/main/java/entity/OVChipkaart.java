@@ -1,14 +1,30 @@
 package entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "ov_chipkaart")
 public class OVChipkaart {
+    @Id
+    @Column(name = "kaart_nummer")
+    @GeneratedValue(generator="increment")
     private int kaartNummer;
+
+    @Column(name = "geldig_tot")
     private LocalDate geldigTot;
     private int klasse;
     private double saldo;
+
+    @ManyToOne
+    @JoinColumn(name = "reiziger_id", foreignKey = @ForeignKey(name = "ov_chipkaart_reiziger_id_fkey"))
     private Reiziger reiziger;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "ov_chipkaart_product",
+            inverseJoinColumns =  @JoinColumn(name = "product_nummer"),
+            joinColumns = @JoinColumn(name = "kaart_nummer"))
     private List<Product> products;
 
     public OVChipkaart(int kaartNummer, LocalDate geldigTot, int klasse, double saldo, Reiziger reiziger) {

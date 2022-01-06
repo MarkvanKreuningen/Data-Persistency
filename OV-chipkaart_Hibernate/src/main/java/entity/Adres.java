@@ -13,16 +13,18 @@ public class Adres {
     private String huisnummer;
     private String straat;
     private String woonplaats;
-    @Column(name = "reiziger_id")
-    private int reizigerId;
 
-    public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, int reizigerId) {
+    @OneToOne
+    @JoinColumn(name = "reiziger_id")
+    private Reiziger reiziger;
+
+    public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, Reiziger reiziger) {
         this.id = id;
         this.postcode = postcode;
         this.huisnummer = huisnummer;
         this.straat = straat;
         this.woonplaats = woonplaats;
-        this.reizigerId = reizigerId;
+        this.reiziger = reiziger;
     }
 
     public Adres(){
@@ -67,14 +69,6 @@ public class Adres {
 
     public void setWoonplaats(String woonplaats) {
         this.woonplaats = woonplaats;
-    }
-
-    public int getReizigerId() {
-        return reizigerId;
-    }
-
-    public void setReizigerId(int reizigerId) {
-        this.reizigerId = reizigerId;
     }
 
     @Override

@@ -1,15 +1,27 @@
 package entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "reiziger")
 public class Reiziger {
+    @Id
+    @GeneratedValue(generator="increment")
+    @Column(name = "reiziger_id")
     private int id;
     private String voorletters;
     private String tussenvoegsel;
     private String achternaam;
     private LocalDate geboortedatum;
+
+    @OneToOne(mappedBy = "reiziger",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Adres adres;
+
+    @OneToMany(mappedBy = "reiziger", cascade = CascadeType.ALL)
     private List<OVChipkaart> ovChipkaarts;
 
     public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, LocalDate geboortedatum) {
@@ -62,6 +74,7 @@ public class Reiziger {
     public void setGeboortedatum(LocalDate geboortedatum) {
         this.geboortedatum = geboortedatum;
     }
+
 
     public Adres getAdres() {
         return adres;

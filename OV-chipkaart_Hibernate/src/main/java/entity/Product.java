@@ -1,9 +1,7 @@
 package entity;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -15,21 +13,11 @@ public class Product {
     private String beschrijving;
     private double prijs;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ov_chipkaart_product",
         joinColumns = @JoinColumn(name = "product_nummer"),
         inverseJoinColumns = @JoinColumn(name = "kaart_nummer"))
     private List<OVChipkaart> ovChipkaarts;
-
-    private List<Integer> kaartnummers;
-
-    public Product(int productNumber, String naam, String beschrijving, double prijs, List<Integer> kaartnummers) {
-        this.productNumber = productNumber;
-        this.naam = naam;
-        this.beschrijving = beschrijving;
-        this.prijs = prijs;
-        this.kaartnummers = kaartnummers;
-    }
 
     public Product(int productNumber, String naam, String beschrijving, double prijs) {
         this.productNumber = productNumber;
@@ -81,14 +69,6 @@ public class Product {
         this.ovChipkaarts = ovChipkaarts;
     }
 
-    public List<Integer> getKaartnummers() {
-        return kaartnummers;
-    }
-
-    public void setKaartnummers(List<Integer> kaartnummers) {
-        this.kaartnummers = kaartnummers;
-    }
-
     @Override
     public String toString() {
         return "Product{" +
@@ -96,7 +76,6 @@ public class Product {
                 ", naam='" + naam + '\'' +
                 ", beschrijving='" + beschrijving + '\'' +
                 ", prijs=" + prijs +
-//                ", kaartnummers=" + kaartnummers +
                 '}';
     }
 }
