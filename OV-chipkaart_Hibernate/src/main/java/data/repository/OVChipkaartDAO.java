@@ -1,10 +1,10 @@
-package repository;
+package data.repository;
 
 
 
-import entity.OVChipkaart;
-import entity.Product;
-import entity.Reiziger;
+import data.entity.OVChipkaart;
+import data.entity.Product;
+import data.entity.Reiziger;
 
 import java.util.List;
 

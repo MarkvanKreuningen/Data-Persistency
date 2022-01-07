@@ -11,10 +11,10 @@
 		<property name="connection.password">Opnieuwinloggen25</property>
 
 		<!-- List of XML mapping files -->
-		<mapping class="entity.Adres"/>
-		<mapping class="entity.Product"/>
-		<mapping class="entity.OVChipkaart"/>
-		<mapping class="entity.Reiziger"/>
+		<mapping class="data.entity.Adres"/>
+		<mapping class="data.entity.Product"/>
+		<mapping class="data.entity.OVChipkaart"/>
+		<mapping class="data.entity.Reiziger"/>
 
 	</session-factory>
 </hibernate-configuration>

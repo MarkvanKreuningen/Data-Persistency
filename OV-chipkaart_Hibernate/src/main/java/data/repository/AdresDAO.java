@@ -1,8 +1,8 @@
-package repository;
+package data.repository;
 
 
-import entity.Adres;
-import entity.Reiziger;
+import data.entity.Adres;
+import data.entity.Reiziger;
 
 import java.util.List;
 

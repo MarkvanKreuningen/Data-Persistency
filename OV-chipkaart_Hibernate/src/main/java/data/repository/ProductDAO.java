@@ -1,13 +1,13 @@
-package repository;
+package data.repository;
 
 
 
-import entity.OVChipkaart;
-import entity.Product;
+import data.entity.OVChipkaart;
+import data.entity.Product;
 
 import java.util.List;
 
-public interface ProductDao {
+public interface ProductDAO {
     Product save(Product product);
     Product update(Product product);
     boolean delete(int id);

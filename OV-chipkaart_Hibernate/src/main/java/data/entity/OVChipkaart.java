@@ -1,4 +1,7 @@
-package entity;
+package data.entity;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,7 +24,7 @@ public class OVChipkaart {
     @JoinColumn(name = "reiziger_id", foreignKey = @ForeignKey(name = "ov_chipkaart_reiziger_id_fkey"))
     private Reiziger reiziger;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "ov_chipkaart_product",
             inverseJoinColumns =  @JoinColumn(name = "product_nummer"),
             joinColumns = @JoinColumn(name = "kaart_nummer"))

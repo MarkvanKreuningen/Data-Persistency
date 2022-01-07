@@ -1,4 +1,7 @@
-package entity;
+package data.entity;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,11 +20,11 @@ public class Reiziger {
     private LocalDate geboortedatum;
 
     @OneToOne(mappedBy = "reiziger",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            cascade = CascadeType.ALL)
     private Adres adres;
 
     @OneToMany(mappedBy = "reiziger", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<OVChipkaart> ovChipkaarts;
 
     public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, LocalDate geboortedatum) {
