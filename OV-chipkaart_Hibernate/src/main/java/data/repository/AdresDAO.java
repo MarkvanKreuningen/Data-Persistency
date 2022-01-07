@@ -10,7 +10,7 @@ public interface AdresDAO {
     List<Adres> findAll();
     Adres save(Adres adres);
     Adres update(Adres adres);
-    boolean delete(int id);
-    Adres findById(int id);
+    boolean delete(int id) throws Exception;
+    Adres findById(int id) throws Exception;
     Adres findByReiziger(Reiziger reiziger);
 }

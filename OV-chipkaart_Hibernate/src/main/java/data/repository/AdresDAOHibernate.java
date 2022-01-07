@@ -38,17 +38,39 @@ public class AdresDAOHibernate extends HibernateBaseDao implements AdresDAO {
 
     @Override
     public Adres update(Adres adres) {
-        return null;
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.update(adres);
+            session.getTransaction().commit();
+        } finally {
+            closeCurrentSession();
+        }
+        return adres;
     }
 
     @Override
-    public boolean delete(int id) {
-        return false;
+    public boolean delete(int id) throws Exception {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.delete(findById(id));
+            session.getTransaction().commit();
+        } finally {
+            closeCurrentSession();
+        }
+        return true;
     }
 
     @Override
-    public Adres findById(int id) {
-        return null;
+    public Adres findById(int id) throws Exception {
+        Adres adres;
+        try (Session session = super.getCurrentSession()) {
+            adres = session.load(Adres.class, id);
+        } catch (Exception e) {
+            throw new Exception(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return adres;
     }
 
     @Override

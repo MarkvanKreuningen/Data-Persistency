@@ -36,8 +36,8 @@ public class Main {
         return factory.openSession();
     }
 
-    public static void main(String[] args) throws SQLException {
-//        testFetchAll();
+    public static void main(String[] args) throws Exception {
+        testFetchAll();
         testDAOHibernate();
     }
 
@@ -66,7 +66,7 @@ public class Main {
     /**
      * P7. testDAOHibernate.
      */
-    private static void testDAOHibernate() {
+    private static void testDAOHibernate() throws Exception {
         AdresDAO adresDAO = new AdresDAOHibernate();
         OVChipkaartDAO ovChipkaartDAO = new OVChipkaartDAOHibernate();
         ProductDAO productDAO = new ProductDAOHibernate();
@@ -88,13 +88,13 @@ public class Main {
 
         // Maak een nieuwe reiziger aan en persisteer deze in de database
         String gbdatum = "1981-03-14";
-        int reizigerId = 77;
+        int reizigerId = 6;
         Reiziger sietske = new Reiziger(reizigerId, "S", "", "Boers", LocalDate.parse(gbdatum));
         reizigerDAO.save(sietske);
 
 
         // Maak een nieuw adres aan en persisteer deze in de database
-        int id = 999;
+        int id = 6;
         Adres adres = new Adres(id, "3432LX", "3", "Wulpenlaan", "Wulpenstad", sietske);
         System.out.print("[Test] Eerst " + adresList.size() + " adressen, na AdresDAO.save() ");
         adresDAO.save(adres);

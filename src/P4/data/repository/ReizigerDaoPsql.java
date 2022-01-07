@@ -13,7 +13,7 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
     private final OVChipkaartDAO ovChipkaartDAO = new OVChipkaartDAOPsql();
 
     @Override
-    public List<Reiziger> findAll() {
+    public List<Reiziger> findAll() throws SQLException {
         List<Reiziger> allReizigers = new ArrayList<>();
         try (Connection conn = super.getConnection()){
             String query = "select * from reiziger";
@@ -32,13 +32,13 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.toString());
         }
         return allReizigers;
     }
 
     @Override
-    public Reiziger findById(int id) {
+    public Reiziger findById(int id) throws SQLException {
         String query = "select * from reiziger where reiziger_id = ?";
         Reiziger r = new Reiziger();
         try (Connection conn = super.getConnection()) {
@@ -54,14 +54,14 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
                 r.setAdres(adresDAO.findByReiziger(r));
                 r.setOvChipkaarts(ovChipkaartDAO.findByReiziger(r));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return r;
     }
 
     @Override
-    public List<Reiziger> findByGbdatum(String datum) {
+    public List<Reiziger> findByGbdatum(String datum) throws SQLException {
         List<Reiziger> allReizigers = new ArrayList<>();
         try (Connection conn = super.getConnection()){
             String query = "select * from reiziger where geboortedatum = ?";
@@ -81,13 +81,13 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.toString());
         }
         return allReizigers;
     }
 
     @Override
-    public Reiziger save(Reiziger r) {
+    public Reiziger save(Reiziger r) throws SQLException {
         String query = "insert into reiziger values (?, ?, ?, ?, ?)";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -99,14 +99,13 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             pstmt.executeUpdate();
             pstmt.close();
             return r;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
-        return null;
     }
 
     @Override
-    public Reiziger update(Reiziger r) {
+    public Reiziger update(Reiziger r) throws SQLException {
         String query = "update reiziger set voorletters = ?, tussenvoegsel = ?, achternaam = ?, geboortedatum = ? where reiziger_id = ?";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -118,14 +117,13 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             pstmt.executeUpdate();
             pstmt.close();
             return r;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
-        return null;
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws SQLException {
         boolean result = false;
         String query = "delete from reiziger where reiziger_id = ?";
         try (Connection conn = super.getConnection()) {
@@ -133,8 +131,8 @@ public class ReizigerDaoPsql extends PostgresBaseDao implements ReizigerDao {
             pstmt.setInt(1, id);
             result = (pstmt.executeUpdate() == 1);
             pstmt.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return result;
     }

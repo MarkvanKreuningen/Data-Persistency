@@ -6,7 +6,6 @@ import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.sql.SQLException;
 import java.util.List;
 
 public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDAO {
@@ -25,8 +24,16 @@ public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDA
     }
 
     @Override
-    public Reiziger findById(int id) throws SQLException {
-        return null;
+    public Reiziger findById(int id) {
+        Reiziger reiziger;
+        try (Session session = super.getCurrentSession()){
+            session.beginTransaction();
+            reiziger = (Reiziger) session.load(Reiziger.class, id);
+            session.getTransaction().commit();
+        } finally {
+            closeCurrentSession();
+        }
+        return reiziger;
     }
 
     @Override
@@ -36,16 +43,37 @@ public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDA
 
     @Override
     public Reiziger save(Reiziger reiziger) {
-        return null;
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.save(reiziger);
+            session.getTransaction().commit();
+        } finally {
+            closeCurrentSession();
+        }
+        return reiziger;
     }
 
     @Override
     public Reiziger update(Reiziger reiziger) {
-        return null;
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.update(reiziger);
+            session.getTransaction().commit();
+        } finally {
+            closeCurrentSession();
+        }
+        return reiziger;
     }
 
     @Override
     public boolean delete(int id) {
-        return false;
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.delete(findById(id));
+            session.getTransaction().commit();
+        } finally {
+            closeCurrentSession();
+        }
+        return true;
     }
 }

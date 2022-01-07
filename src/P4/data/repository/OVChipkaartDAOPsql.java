@@ -11,7 +11,7 @@ import java.util.List;
 
 public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDAO {
     @Override
-    public List<OVChipkaart> findByReiziger(Reiziger reiziger) {
+    public List<OVChipkaart> findByReiziger(Reiziger reiziger) throws SQLException {
         String query = "select * from ov_chipkaart where reiziger_id = ?";
         List<OVChipkaart> ovChipkaarts = new ArrayList<>();
         try (Connection conn = super.getConnection()) {
@@ -27,14 +27,14 @@ public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDA
                 o.setReiziger(reiziger);
                 ovChipkaarts.add(o);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return ovChipkaarts;
     }
 
     @Override
-    public OVChipkaart save(OVChipkaart o) {
+    public OVChipkaart save(OVChipkaart o) throws SQLException {
         String query = "insert into ov_chipkaart values (?, ?, ?, ?, ?)";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -46,14 +46,13 @@ public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDA
             pstmt.executeUpdate();
             pstmt.close();
             return o;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
-        return null;
     }
 
     @Override
-    public OVChipkaart update(OVChipkaart o) {
+    public OVChipkaart update(OVChipkaart o) throws SQLException {
         String query = "update ov_chipkaart set geldig_tot = ?, klasse = ?, saldo = ?, reiziger_id = ? where kaart_nummer = ?";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -65,14 +64,13 @@ public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDA
             pstmt.executeUpdate();
             pstmt.close();
             return o;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
-        return null;
     }
 
     @Override
-    public boolean delete(int kaartNummer) {
+    public boolean delete(int kaartNummer) throws SQLException {
         boolean result = false;
         String query = "delete from ov_chipkaart where kaart_nummer = ?";
         try (Connection conn = super.getConnection()) {
@@ -80,8 +78,8 @@ public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDA
             pstmt.setInt(1, kaartNummer);
             result = (pstmt.executeUpdate() == 1);
             pstmt.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return result;
     }

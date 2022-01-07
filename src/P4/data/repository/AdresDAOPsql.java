@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
     @Override
-    public List<Adres> findAll() {
+    public List<Adres> findAll() throws SQLException {
         List<Adres> adresList = new ArrayList<>();
         try (Connection conn = super.getConnection()) {
             String query = "select * from adres";
@@ -30,13 +30,13 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
                 adresList.add(a);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.toString());
         }
         return adresList;
     }
 
     @Override
-    public Adres save(Adres a) {
+    public Adres save(Adres a) throws SQLException {
         String query = "insert into adres values (?, ?, ?, ?, ?, ?)";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -49,14 +49,13 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
             pstmt.executeUpdate();
             pstmt.close();
             return a;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
-        return null;
     }
 
     @Override
-    public Adres update(Adres a) {
+    public Adres update(Adres a) throws SQLException {
         String query = "update adres set postcode = ?, huisnummer = ?, straat = ?, woonplaats = ? where adres_id = ?";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -68,14 +67,13 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
             pstmt.executeUpdate();
             pstmt.close();
             return a;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
-        return null;
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws SQLException {
         boolean result = false;
         String query = "delete from adres where adres_id = ?";
         try (Connection conn = super.getConnection()) {
@@ -83,14 +81,14 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
             pstmt.setInt(1, id);
             result = (pstmt.executeUpdate() == 1);
             pstmt.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return result;
     }
 
     @Override
-    public Adres findById(int id) {
+    public Adres findById(int id) throws SQLException {
         String query = "select * from adres where adres_id = ?";
         Adres a = new Adres();
         try (Connection conn = super.getConnection()) {
@@ -105,14 +103,14 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
                 a.setWoonplaats(rs.getString("woonplaats"));
                 a.setReizigerId(rs.getInt("reiziger_id"));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return a;
     }
 
     @Override
-    public Adres findByReiziger(Reiziger reiziger) {
+    public Adres findByReiziger(Reiziger reiziger) throws SQLException {
         String query = "select * from adres where reiziger_id = ?";
         Adres a = new Adres();
         try (Connection conn = super.getConnection()) {
@@ -127,8 +125,8 @@ public class AdresDAOPsql extends PostgresBaseDao implements AdresDAO {
                 a.setWoonplaats(rs.getString("woonplaats"));
                 a.setReizigerId(rs.getInt("reiziger_id"));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new SQLException(e.toString());
         }
         return a;
     }
