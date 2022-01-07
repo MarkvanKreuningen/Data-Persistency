@@ -6,30 +6,33 @@ import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDAO {
 
     @Override
-    public List<Reiziger> findAll() {
+    public List<Reiziger> findAll() throws SQLException {
         try (Session session = super.getCurrentSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Reiziger> criteria = builder.createQuery(Reiziger.class);
             criteria.from(Reiziger.class);
 
             return session.createQuery(criteria).getResultList();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
         } finally {
             closeCurrentSession();
         }
     }
 
     @Override
-    public Reiziger findById(int id) {
+    public Reiziger findById(int id) throws SQLException {
         Reiziger reiziger;
         try (Session session = super.getCurrentSession()){
-            session.beginTransaction();
-            reiziger = (Reiziger) session.load(Reiziger.class, id);
-            session.getTransaction().commit();
+            reiziger = session.get(Reiziger.class, id);
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
         } finally {
             closeCurrentSession();
         }
@@ -37,16 +40,13 @@ public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDA
     }
 
     @Override
-    public List<Reiziger> findByGbdatum(String datum) {
-        return null;
-    }
-
-    @Override
-    public Reiziger save(Reiziger reiziger) {
+    public Reiziger save(Reiziger reiziger) throws SQLException {
         try (Session session = super.getCurrentSession()) {
             session.beginTransaction();
             session.save(reiziger);
             session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
         } finally {
             closeCurrentSession();
         }
@@ -54,11 +54,13 @@ public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDA
     }
 
     @Override
-    public Reiziger update(Reiziger reiziger) {
+    public Reiziger update(Reiziger reiziger) throws SQLException {
         try (Session session = super.getCurrentSession()) {
             session.beginTransaction();
             session.update(reiziger);
             session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
         } finally {
             closeCurrentSession();
         }
@@ -66,11 +68,13 @@ public class ReizigerDAOHibernate extends HibernateBaseDao implements ReizigerDA
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws SQLException {
         try (Session session = super.getCurrentSession()) {
             session.beginTransaction();
             session.delete(findById(id));
             session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
         } finally {
             closeCurrentSession();
         }

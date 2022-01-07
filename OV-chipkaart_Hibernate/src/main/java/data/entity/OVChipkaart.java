@@ -12,7 +12,6 @@ import java.util.List;
 public class OVChipkaart {
     @Id
     @Column(name = "kaart_nummer")
-    @GeneratedValue(generator="increment")
     private int kaartNummer;
 
     @Column(name = "geldig_tot")

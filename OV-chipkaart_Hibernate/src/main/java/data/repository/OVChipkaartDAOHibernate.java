@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import java.sql.SQLException;
 import java.util.List;
 
 public class OVChipkaartDAOHibernate extends HibernateBaseDao implements OVChipkaartDAO {
@@ -27,37 +28,57 @@ public class OVChipkaartDAOHibernate extends HibernateBaseDao implements OVChipk
     }
 
     @Override
-    public OVChipkaart findById(int kaartNumber) {
-        return null;
+    public OVChipkaart findById(int kaartNumber) throws SQLException {
+        OVChipkaart ovChipkaart;
+        try (Session session = super.getCurrentSession()) {
+            ovChipkaart = session.get(OVChipkaart.class, kaartNumber);
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return ovChipkaart;
     }
 
     @Override
-    public OVChipkaart save(OVChipkaart ovChipkaart) {
-        return null;
+    public OVChipkaart save(OVChipkaart ovChipkaart) throws SQLException {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.save(ovChipkaart);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return ovChipkaart;
     }
 
     @Override
-    public OVChipkaart update(OVChipkaart ovChipkaart) {
-        return null;
+    public OVChipkaart update(OVChipkaart ovChipkaart) throws SQLException {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.update(ovChipkaart);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return ovChipkaart;
     }
 
     @Override
-    public boolean delete(int kaartNummer) {
-        return false;
-    }
-
-    @Override
-    public List<Integer> getKaartNummersVanProduct(Product product) {
-        return null;
-    }
-
-    @Override
-    public OVChipkaart addProductToOvchipKaart(OVChipkaart ovChipkaart, int productNumber) {
-        return null;
-    }
-
-    @Override
-    public boolean removeProductFromOvChipkaart(OVChipkaart ovChipkaart, int productNumber) {
-        return false;
+    public boolean delete(int kaartNummer) throws SQLException {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.delete(findById(kaartNummer));
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return true;
     }
 }

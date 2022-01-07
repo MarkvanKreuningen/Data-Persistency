@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "adres")
 public class Adres {
     @Id
-    @GeneratedValue(generator="increment")
     @Column(name = "adres_id")
     private int id;
     private String postcode;

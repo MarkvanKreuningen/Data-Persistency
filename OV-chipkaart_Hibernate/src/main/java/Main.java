@@ -1,4 +1,6 @@
 import data.entity.Adres;
+import data.entity.OVChipkaart;
+import data.entity.Product;
 import data.entity.Reiziger;
 import data.repository.*;
 import org.hibernate.HibernateException;
@@ -10,6 +12,7 @@ import org.hibernate.query.Query;
 import javax.persistence.metamodel.EntityType;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,6 +42,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         testFetchAll();
         testDAOHibernate();
+        testAddProductToOvChipkaart();
     }
 
     /**
@@ -66,7 +70,7 @@ public class Main {
     /**
      * P7. testDAOHibernate.
      */
-    private static void testDAOHibernate() throws Exception {
+    private static void testDAOHibernate() throws SQLException {
         AdresDAO adresDAO = new AdresDAOHibernate();
         OVChipkaartDAO ovChipkaartDAO = new OVChipkaartDAOHibernate();
         ProductDAO productDAO = new ProductDAOHibernate();
@@ -88,28 +92,28 @@ public class Main {
 
         // Maak een nieuwe reiziger aan en persisteer deze in de database
         String gbdatum = "1981-03-14";
-        int reizigerId = 6;
+        int reizigerId = 999;
         Reiziger sietske = new Reiziger(reizigerId, "S", "", "Boers", LocalDate.parse(gbdatum));
         reizigerDAO.save(sietske);
 
 
         // Maak een nieuw adres aan en persisteer deze in de database
-        int id = 6;
-        Adres adres = new Adres(id, "3432LX", "3", "Wulpenlaan", "Wulpenstad", sietske);
+        int adresId = 77;
+        Adres adres = new Adres(adresId, "3432LX", "3", "Wulpenlaan", "Wulpenstad", sietske);
         System.out.print("[Test] Eerst " + adresList.size() + " adressen, na AdresDAO.save() ");
         adresDAO.save(adres);
         adresList = adresDAO.findAll();
         System.out.println(adresList.size() + " adressen\n");
 
         // Een adres vinden op id
-        Adres adres999 = adresDAO.findById(id);
-        System.out.println("[Test] " + adres999.toString() + " gevonden dmv id met id " + id + "\n");
+        Adres adres77 = adresDAO.findById(adresId);
+        System.out.println("[Test] " + adres77.toString() + " gevonden dmv id met id " + adresId + "\n");
 
         // Update een adres
-        System.out.println("[Test] Eerst was de postcode "+adres999.getPostcode()+", na AdresDAO.update(adres) is het ");
-        adres999.setPostcode("3641WJ");
-        adresDAO.update(adres999);
-        System.out.println(adres999.getPostcode() + "\n");
+        System.out.println("[Test] Eerst was de postcode "+adres77.getPostcode()+", na AdresDAO.update(adres) is het ");
+        adres77.setPostcode("3641WJ");
+        adresDAO.update(adres77);
+        System.out.println(adres77.getPostcode() + "\n");
 
         // Alle reizigers met 1 op 1 relatie
         System.out.println("[Test] Reiziger.findAll() geeft de volgende reizigers:");
@@ -120,10 +124,58 @@ public class Main {
         System.out.println();
 
         // Delete een adres
-        System.out.print("[Test] Eerst " + adresList.size() + " adressen, na AdresDao.delete(" + id + ") ");
-        adresDAO.delete(id);
+        System.out.print("[Test] Eerst " + adresList.size() + " adressen, na AdresDao.delete(" + adresId + ") ");
+        adresDAO.delete(adresId);
         adresList = adresDAO.findAll();
         System.out.println(adresList.size() + " adressen\n");
+
+
+        System.out.println("\n---------- Test ReizigerDAO -------------");
+
+        // Voeg aanvullende tests van de ontbrekende CRUD-operaties in.
+        // Een reiziger vinden op id
+        Reiziger reiziger6 = reizigerDAO.findById(reizigerId);
+        System.out.println("[Test] " + reiziger6.toString() + " gevonden dmv id met id " + reizigerId + "\n");
+
+        // Update een reiziger
+        System.out.println("[Test] Eerst was de achternaam "+reiziger6.getAchternaam()+", na ReizigerDao.update(reiziger) is het ");
+        reiziger6.setAchternaam("van Kreuningen");
+        reizigerDAO.update(reiziger6);
+        System.out.println(reiziger6.getAchternaam() + "\n");
+
+        // Delete een reiziger
+        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.delete(" + reizigerId + ") ");
         reizigerDAO.delete(reizigerId);
+        reizigers = reizigerDAO.findAll();
+        System.out.println(reizigers.size() + " reizigers\n");
+    }
+
+    private static void testAddProductToOvChipkaart() throws SQLException {
+        AdresDAO adresDAO = new AdresDAOHibernate();
+        OVChipkaartDAO ovChipkaartDAO = new OVChipkaartDAOHibernate();
+        ProductDAO productDAO = new ProductDAOHibernate();
+        ReizigerDAO reizigerDAO = new ReizigerDAOHibernate();
+
+        Reiziger mark = new Reiziger(111, "M", "van", "Kreuningen", LocalDate.parse("1998-09-12"));
+        reizigerDAO.save(mark);
+        Adres adresMark = new Adres(222, "3641WJ", "46A", "Houtduif", "Mijdrecht", mark);
+        adresDAO.save(adresMark);
+
+        Product product = new Product(555, "Marks", "Marks totaal eigen product", 2.50);
+        productDAO.save(product);
+        OVChipkaart ovChipkaart = new OVChipkaart(9999, LocalDate.parse("2025-03-14"), 1, 1500.00, mark);
+        ovChipkaartDAO.save(ovChipkaart);
+
+        System.out.println(ovChipkaartDAO.findById(9999));
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+        ovChipkaart.setProducts(products);
+        ovChipkaartDAO.update(ovChipkaart);
+        System.out.println(reizigerDAO.findById(111));
+
+        ovChipkaartDAO.delete(9999);
+        productDAO.delete(555);
+        adresDAO.delete(222);
+        reizigerDAO.delete(111);
     }
 }

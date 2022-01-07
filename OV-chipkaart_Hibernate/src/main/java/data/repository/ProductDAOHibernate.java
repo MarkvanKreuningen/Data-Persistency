@@ -1,34 +1,69 @@
 package data.repository;
 
 import data.HibernateBaseDao;
-import data.entity.OVChipkaart;
 import data.entity.Product;
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ProductDAOHibernate extends HibernateBaseDao implements ProductDAO {
 
     @Override
-    public Product save(Product product) {
-        return null;
+    public Product save(Product product) throws SQLException {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.save(product);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return product;
     }
 
     @Override
-    public Product update(Product product) {
-        return null;
+    public Product update(Product product) throws SQLException {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.update(product);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return product;
     }
 
     @Override
-    public boolean delete(int id) {
-        return false;
+    public boolean delete(int id) throws SQLException {
+        try (Session session = super.getCurrentSession()) {
+            session.beginTransaction();
+            session.delete(findById(id));
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return true;
     }
 
     @Override
-    public List<Product> findByOVChipkaart(OVChipkaart ovChipkaart) {
-        return null;
+    public Product findById(int id) throws SQLException {
+        Product product;
+        try (Session session = super.getCurrentSession()) {
+            product = session.get(Product.class, id);
+        } catch (Exception e) {
+            throw new SQLException(e.toString());
+        } finally {
+            closeCurrentSession();
+        }
+        return product;
     }
 
     @Override

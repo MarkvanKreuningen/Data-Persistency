@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "reiziger")
 public class Reiziger {
     @Id
-    @GeneratedValue(generator="increment")
     @Column(name = "reiziger_id")
     private int id;
     private String voorletters;
