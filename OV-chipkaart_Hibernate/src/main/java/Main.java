@@ -42,7 +42,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         testFetchAll();
         testDAOHibernate();
-        testAddProductToOvChipkaart();
+        testProductAndOvChipkaart();
     }
 
     /**
@@ -123,12 +123,6 @@ public class Main {
         }
         System.out.println();
 
-        // Delete een adres
-        System.out.print("[Test] Eerst " + adresList.size() + " adressen, na AdresDao.delete(" + adresId + ") ");
-        adresDAO.delete(adresId);
-        adresList = adresDAO.findAll();
-        System.out.println(adresList.size() + " adressen\n");
-
 
         System.out.println("\n---------- Test ReizigerDAO -------------");
 
@@ -143,6 +137,12 @@ public class Main {
         reizigerDAO.update(reiziger6);
         System.out.println(reiziger6.getAchternaam() + "\n");
 
+        // Delete een adres
+        System.out.print("[Test] Eerst " + adresList.size() + " adressen, na AdresDao.delete(" + adresId + ") ");
+        adresDAO.delete(adresId);
+        adresList = adresDAO.findAll();
+        System.out.println(adresList.size() + " adressen\n");
+
         // Delete een reiziger
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.delete(" + reizigerId + ") ");
         reizigerDAO.delete(reizigerId);
@@ -150,7 +150,9 @@ public class Main {
         System.out.println(reizigers.size() + " reizigers\n");
     }
 
-    private static void testAddProductToOvChipkaart() throws SQLException {
+    private static void testProductAndOvChipkaart() throws SQLException {
+        System.out.println("\n---------- Test Product/OVChipkaart -DAO -------------");
+
         AdresDAO adresDAO = new AdresDAOHibernate();
         OVChipkaartDAO ovChipkaartDAO = new OVChipkaartDAOHibernate();
         ProductDAO productDAO = new ProductDAOHibernate();

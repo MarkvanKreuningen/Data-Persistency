@@ -2,13 +2,14 @@
 <!DOCTYPE hibernate-configuration SYSTEM 
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
-<hibernate-configuration> 
+<hibernate-configuration>
 
 	<session-factory>
 		<property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
 		<property name="connection.url">jdbc:postgresql://localhost:5432/ovchip</property>
 		<property name="connection.username">postgres</property>
 		<property name="connection.password">Opnieuwinloggen25</property>
+		<property name=""></property>
 
 		<!-- List of XML mapping files -->
 		<mapping class="data.entity.Adres"/>

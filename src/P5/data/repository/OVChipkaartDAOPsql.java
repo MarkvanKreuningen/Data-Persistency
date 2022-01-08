@@ -81,14 +81,13 @@ public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDA
 
     @Override
     public OVChipkaart update(OVChipkaart o) {
-        String query = "update ov_chipkaart set geldig_tot = ?, klasse = ?, saldo = ?, reiziger_id = ? where kaart_nummer = ?";
+        String query = "update ov_chipkaart set geldig_tot = ?, klasse = ?, saldo = ? where kaart_nummer = ?";
         try (Connection conn = super.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setDate(1, Date.valueOf(o.getGeldigTot()));
             pstmt.setInt(2, o.getKlasse());
             pstmt.setDouble(3, o.getSaldo());
-            pstmt.setInt(4, o.getReiziger().getId());
-            pstmt.setInt(5, o.getKaartNummer());
+            pstmt.setInt(4, o.getKaartNummer());
             pstmt.executeUpdate();
             pstmt.close();
             return o;
@@ -101,8 +100,16 @@ public class OVChipkaartDAOPsql extends PostgresBaseDao implements OVChipkaartDA
     @Override
     public boolean delete(int kaartNummer) {
         boolean result = false;
+        String queryDeleteKoppelRow = "delete from ov_chipkaart_product where kaart_nummer = ? and product_nummer = ?";
         String query = "delete from ov_chipkaart where kaart_nummer = ?";
         try (Connection conn = super.getConnection()) {
+            OVChipkaart ovChipkaart = findById(kaartNummer);
+            for (Product product: ovChipkaart.getProducts()) {
+                PreparedStatement pstmtDeleteKoppelRow = conn.prepareStatement(queryDeleteKoppelRow);
+                pstmtDeleteKoppelRow.setInt(1, kaartNummer);
+                pstmtDeleteKoppelRow.setInt(2, product.getProductNumber());
+                pstmtDeleteKoppelRow.executeUpdate();
+            }
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, kaartNummer);
             result = (pstmt.executeUpdate() == 1);
